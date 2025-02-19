@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notícias</title>
+</head>
+<body>
+    <h1>Notícias</h1>
+    <div id="noticias"></div>
+
+    <script>
+        async function carregarNoticias() {
+            const response = await fetch('/api/noticias');
+            const noticias = await response.json();
+
+            const noticiasDiv = document.getElementById('noticias');
+            noticiasDiv.innerHTML = '';
+            noticias.forEach(noticia => {
+                noticiasDiv.innerHTML += `
+                    <div>
+                        <h2>${noticia.titulo}</h2>
+                        ${noticia.imagem ? `<img src="${noticia.imagem}" alt="Imagem da notícia" style="max-width: 100%; height: auto;">` : ''}
+                        <p>${noticia.conteudo}</p>
+                        <small>${noticia.data_criacao}</small><br>
+                    </div>
+                    <hr>
+                `;
+            });
+        }
+
+        carregarNoticias();
+    </script>
+</body>
+</html>

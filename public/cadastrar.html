@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Notícia</title>
+</head>
+<body>
+    <h1>Criar Notícia</h1>
+    <form id="formNoticia">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" required><br><br>
+        <label for="conteudo">Conteúdo:</label>
+        <textarea id="conteudo" required></textarea><br><br>
+        <label for="imagem">URL da Imagem:</label>
+        <input type="url" id="imagem" placeholder="https://exemplo.com/imagem.jpg"><br><br>
+        <button type="submit">Criar</button>
+    </form>
+
+    <script>
+        document.getElementById('formNoticia').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const titulo = document.getElementById('titulo').value;
+            const conteudo = document.getElementById('conteudo').value;
+            const imagem = document.getElementById('imagem').value;
+
+            const response = await fetch('/api/noticia', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ titulo, conteudo, imagem })
+            });
+
+            const data = await response.json();
+            alert('Notícia criada com sucesso! ID: ' + data.id);
+        });
+    </script>
+</body>
+</html>
