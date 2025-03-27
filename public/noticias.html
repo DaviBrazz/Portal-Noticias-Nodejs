@@ -4,30 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notícias</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <h1>Notícias</h1>
     <div id="noticias"></div>
 
     <script>
-        async function carregarNoticias() {
-            const response = await fetch('/api/noticias');
-            const noticias = await response.json();
+       async function carregarNoticias() {
+    const response = await fetch('/api/noticias');
+    const noticias = await response.json();
 
-            const noticiasDiv = document.getElementById('noticias');
-            noticiasDiv.innerHTML = '';
-            noticias.forEach(noticia => {
-                noticiasDiv.innerHTML += `
-                    <div>
-                        <h2>${noticia.titulo}</h2>
-                        ${noticia.imagem ? `<img src="${noticia.imagem}" alt="Imagem da notícia" style="max-width: 100%; height: auto;">` : ''}
-                        <p>${noticia.conteudo}</p>
-                        <small>${noticia.data_criacao}</small><br>
-                    </div>
-                    <hr>
-                `;
-            });
-        }
+    const noticiasDiv = document.getElementById('noticias');
+    noticiasDiv.innerHTML = '';
+    noticias.forEach(noticia => {
+        // Formatar a data para o formato pt-BR
+        const data = new Date(noticia.data_criacao);
+        const dataFormatada = data.toLocaleString('pt-BR', {
+            weekday: 'long', 
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+
+        noticiasDiv.innerHTML += `
+            <div class="noticia">
+                <h2>${noticia.titulo}</h2>
+                ${noticia.imagem ? `<img src="${noticia.imagem}" alt="Imagem da notícia">` : ''}
+                <p>${noticia.conteudo}</p>
+                <small>${dataFormatada}</small>
+            </div>
+            <hr>
+        `;
+    });
+}
+
+carregarNoticias();
+
 
         carregarNoticias();
     </script>

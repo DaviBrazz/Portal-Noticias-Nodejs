@@ -39,4 +39,14 @@ function listarNoticias() {
     });
 }
 
-module.exports = { criarNoticia, listarNoticias };
+async function editarNoticia(id, titulo, conteudo, imagem) {
+    const result = await db.run(
+        'UPDATE noticias SET titulo = ?, conteudo = ?, imagem = ? WHERE id = ?',
+        [titulo, conteudo, imagem, id]
+    );
+    return result.affectedRows > 0;
+}
+
+
+
+module.exports = { criarNoticia, listarNoticias, editarNoticia };
